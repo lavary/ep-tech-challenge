@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" class="form-control" v-model="client.email">
+                <input type="email" id="email" pattern=".+@.+\..{2,}" placeholder="example@domain.com" class="form-control" v-model="client.email">
             </div>
             <div class="form-group">
                 <label for="phone">Phone</label>
@@ -65,14 +65,14 @@ export default {
                 return
             }
 
-            const data = await axios.post('/clients', this.client)
-
-            if (data.status !== 201) {
-                this.$toast.error("Something is wrong!");
+            try {
+                const data = await axios.post('/clients', this.client)
+                
+                window.location.href = data.data.url;
+            } catch (error) {
+                this.$toast.error("The request couldn't be processed (code: 422)");
                 return
             }
-
-            window.location.href = data.data.url;
         }
     }
 }

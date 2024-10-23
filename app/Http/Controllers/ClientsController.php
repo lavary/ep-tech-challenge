@@ -36,7 +36,7 @@ class ClientsController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:190',
-            'email' => 'email|nullable|required_without:phone',
+            'email' => 'email:rfc,dns|nullable|required_without:phone',
             'phone' => 'nullable|regex:/^\+?[0-9\s]+$/',
         ]);
 
