@@ -99,7 +99,7 @@ export default {
 
     computed: {
         filteredBookings() {
-            const now = dayjs();
+            const now = dayjs();  
             return this.client.bookings.filter(booking => {
                 const bookingDate = dayjs(booking.start);
                 
@@ -119,8 +119,14 @@ export default {
             return `${dayjs(startDate).format('dddd D MMMM YYYY, HH:mm')} to ${dayjs(endDate).format('HH:mm')}`;
         },
 
-        deleteBooking(booking) {
-            axios.delete(`/bookings/${booking.id}`);
+        async deleteBooking(booking) {
+            if (!confirm('Are you sure?')) {
+                return
+            }
+
+            await axios.delete(`/bookings/${booking.id}`);
+            this.$set(this.client, 'bookings', this.client.bookings.filter(b => b.id !== booking.id))
+            this.$toast.success("Booking deleted!");
         }
     }
 }
