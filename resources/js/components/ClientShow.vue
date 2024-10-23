@@ -4,9 +4,9 @@
 
         <div class="flex">
             <div class="w-1/3 mr-5">
-                <div class="w-full bg-white rounded p-4">
+                <div class="w-full bg-white rounded-md p-4 shadow-md">
                     <h2>Client Info</h2>
-                    <table>
+                    <table class="border-separate border-spacing-4">
                         <tbody>
                             <tr>
                                 <th class="text-gray-600 pr-3">Name</th>
@@ -30,13 +30,13 @@
             </div>
 
             <div class="w-2/3">
-                <div>
+                <div class="mb-4">
                     <button class="btn" :class="{'btn-primary': currentTab == 'bookings', 'btn-default': currentTab != 'bookings'}" @click="switchTab('bookings')">Bookings</button>
                     <button class="btn" :class="{'btn-primary': currentTab == 'journals', 'btn-default': currentTab != 'journals'}" @click="switchTab('journals')">Journals</button>
                 </div>
 
                 <!-- Bookings -->
-                <div class="bg-white rounded p-4" v-if="currentTab == 'bookings'">
+                <div class="bg-white rounded-md p-4 shadow-md" v-if="currentTab == 'bookings'">
                     <h3 class="mb-3">List of client bookings</h3>
                     <div class="rounded-md mb-4 px-4 py-2 border">
                         <select v-model="filter" class="border-0 w-full">
@@ -46,19 +46,19 @@
                         </select>
                     </div>
                     <template v-if="client.bookings && client.bookings.length > 0">
-                        <table>
-                            <thead>
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <th>Time</th>
-                                    <th>Notes</th>
-                                    <th>Actions</th>
+                                    <th scope="col" class="px-6 py-3">Time</th>
+                                    <th scope="col" class="px-6 py-3">Notes</th>
+                                    <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="booking in filteredBookings" :key="booking.id">
-                                    <td>{{ formatDate(booking.start, booking.end) }}</td>
-                                    <td>{{ booking.notes }}</td>
-                                    <td>
+                                <tr v-for="booking in filteredBookings" :key="booking.id" class="bg-white border-b">
+                                    <td class="px-6 py-4">{{ formatDate(booking.start, booking.end) }}</td>
+                                    <td class="px-6 py-4">{{ booking.notes }}</td>
+                                    <td class="px-6 py-4">
                                         <button class="btn btn-danger btn-sm" @click="deleteBooking(booking)">Delete</button>
                                     </td>
                                 </tr>
