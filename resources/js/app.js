@@ -3,10 +3,12 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,10 +21,15 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('clients-list', require('./components/ClientsList.vue').default);
-Vue.component('client-form', require('./components/ClientForm.vue').default);
-Vue.component('client-show', require('./components/ClientShow.vue').default);
+Vue.use(Toast, {});
+
+Vue.component(
+    "example-component",
+    require("./components/ExampleComponent.vue").default
+);
+Vue.component("clients-list", require("./components/ClientsList.vue").default);
+Vue.component("client-form", require("./components/ClientForm.vue").default);
+Vue.component("client-show", require("./components/ClientShow.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,5 +38,5 @@ Vue.component('client-show', require('./components/ClientShow.vue').default);
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app"
 });

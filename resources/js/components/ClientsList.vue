@@ -40,8 +40,14 @@ export default {
     props: ['clients'],
 
     methods: {
-        deleteClient(client) {
-            axios.delete(`/clients/${client.id}`);
+        async deleteClient(client) {
+            if (!confirm('Are you sure?')) {
+                return
+            }
+
+            await axios.delete(`/clients/${client.id}`)
+            this.clients = this.clients.filter(c => c.id !== client.id);
+            this.$toast.success("Client deleted!");
         }
     }
 }
