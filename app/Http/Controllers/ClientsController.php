@@ -32,14 +32,13 @@ class ClientsController extends Controller
 
     public function store(Request $request)
     {
-        $client = new Client;
-        $client->name = $request->get('name');
-        $client->email = $request->get('email');
-        $client->phone = $request->get('phone');
-        $client->adress = $request->get('adress');
-        $client->city = $request->get('city');
-        $client->postcode = $request->get('postcode');
-        $client->save();
+        $validated = $request->validate([
+            'name' => 'required|string|max:190',
+            'email' => 'email|nullable|required_without:phone',
+            'phone' => 'nullable|regex:/^\+?[0-9\s]+$/',
+        ]);
+
+        $client = $request->user()->clients()->create($validated);
 
         return $client;
     }

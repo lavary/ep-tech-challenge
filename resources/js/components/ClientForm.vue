@@ -1,19 +1,19 @@
 <template>
     <div>
         <h1 class="mb-6">Clients -> Add New Client</h1>
-
         <div class="max-w-lg mx-auto">
+            <form @submit.prevent="storeClient">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" class="form-control" v-model="client.name">
+                <input type="text" id="name" class="form-control" maxlength="190" required v-model="client.name">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" id="email" class="form-control" v-model="client.email">
+                <input type="email" id="email" class="form-control" v-model="client.email">
             </div>
             <div class="form-group">
                 <label for="phone">Phone</label>
-                <input type="text" id="phone" class="form-control" v-model="client.phone">
+                <input type="tel" id="phone" class="form-control" pattern="^\+?\d[\d\s]*$" v-model="client.phone">
             </div>
             <div class="form-group">
                 <label for="name">Address</label>
@@ -32,8 +32,9 @@
 
             <div class="text-right">
                 <a href="/clients" class="btn btn-default">Cancel</a>
-                <button @click="storeClient" class="btn btn-primary">Create</button>
+                <button class="btn btn-primary">Create</button>
             </div>
+            </form>
         </div>
     </div>
 </template>
@@ -58,11 +59,20 @@ export default {
     },
 
     methods: {
-        storeClient() {
-            axios.post('/clients', this.client)
-                .then((data) => {
-                    window.location.href = data.data.url;
-                });
+        async storeClient() {
+            if (!this.client.email && !this.client.phone) {
+                this.$toast.error("Phone or email required!");
+                return
+            }
+
+            const data = await axios.post('/clients', this.client)
+
+            if (data.status !== 201) {
+                this.$toast.error("Something is wrong!");
+                return
+            }
+
+            window.location.href = data.data.url;
         }
     }
 }
