@@ -38,11 +38,13 @@
                 <!-- Bookings -->
                 <div class="bg-white rounded p-4" v-if="currentTab == 'bookings'">
                     <h3 class="mb-3">List of client bookings</h3>
-                    <select v-model="filter">
-                        <option value="all">All bookings</option>
-                        <option value="future">Future bookings only</option>
-                        <option value="past">Past bookings only</option>
-                    </select>
+                    <div class="rounded-md mb-4 px-4 py-2 border">
+                        <select v-model="filter" class="border-0 w-full">
+                            <option value="all">All bookings</option>
+                            <option value="future">Future bookings only</option>
+                            <option value="past">Past bookings only</option>
+                        </select>
+                    </div>
                     <template v-if="client.bookings && client.bookings.length > 0">
                         <table>
                             <thead>
