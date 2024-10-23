@@ -38,7 +38,11 @@
                 <!-- Bookings -->
                 <div class="bg-white rounded p-4" v-if="currentTab == 'bookings'">
                     <h3 class="mb-3">List of client bookings</h3>
-
+                    <select v-model="filter">
+                        <option value="all">All bookings</option>
+                        <option value="future">Future bookings only</option>
+                        <option value="past">Past bookings only</option>
+                    </select>
                     <template v-if="client.bookings && client.bookings.length > 0">
                         <table>
                             <thead>
@@ -49,7 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="booking in client.bookings" :key="booking.id">
+                                <tr v-for="booking in filteredBookings" :key="booking.id">
                                     <td>{{ formatDate(booking.start, booking.end) }}</td>
                                     <td>{{ booking.notes }}</td>
                                     <td>
@@ -89,6 +93,20 @@ export default {
     data() {
         return {
             currentTab: 'bookings',
+            filter: 'all'
+        }
+    },
+
+    computed: {
+        filteredBookings() {
+            const now = dayjs();
+            return this.client.bookings.filter(booking => {
+                const bookingDate = dayjs(booking.start);
+                
+                return this.filter === 'all' ||
+                (this.filter === 'past' && bookingDate.isBefore(now)) ||
+                (this.filter === 'future' && bookingDate.isAfter(now));
+            })
         }
     },
 
